@@ -20,10 +20,10 @@ struct JsonGrammar : qi::grammar< Iterator, boost::any(), ascii::space_type > {
     JsonGrammar(): JsonGrammar::base_type( root ) {
         root = object.alias();
         object = '{' >> pair % ',' >> '}';
-        pair = key >> ':' >> value;
-        value = array | key | double_ | bool_;
+        pair = string >> ':' >> value;
+        value = array | string | double_ | bool_;
         array = '[' >> value % ',' >> ']';
-        key = lexeme[ '\"' >> *( char_ - '\"' ) >> '\"' ];
+        string = lexeme[ '\"' >> *( char_ - '\"' ) >> '\"' ];
     }
 
     qi::rule< Iterator, boost::any(), ascii::space_type > root;
@@ -31,5 +31,5 @@ struct JsonGrammar : qi::grammar< Iterator, boost::any(), ascii::space_type > {
     qi::rule< Iterator, std::pair< std::string, boost::any >(), ascii::space_type > pair;
     qi::rule< Iterator, boost::any(), ascii::space_type > value;
     qi::rule< Iterator, std::vector< boost::any >(), ascii::space_type > array;
-    qi::rule< Iterator, std::string(), ascii::space_type > key;
+    qi::rule< Iterator, std::string(), ascii::space_type > string;
 };
