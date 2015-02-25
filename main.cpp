@@ -9,21 +9,22 @@ using namespace std;
 
 int main(int argc, const char* argv[])
 {
-    cout << "mem before: " << GetMemorySize() << endl;
+    auto mem1 = GetMemorySize();
     auto time1 = Time();
 
     auto json = new Json(argv[1]);
 
     auto time2 = Time();
 
-    cout << "mem after: " << GetMemorySize() << endl;
-    cout << "loading time, ms: " << TimeDiff(time1, time2).tv_nsec / 1024 << endl;
+    auto mem2 = GetMemorySize();
+    cout << "mem: " << GetMemorySize() - mem1 << endl;
+    cout << "loading time, ms: " << TimeDiff(time1, time2).tv_nsec / 1024 / 1024 << endl;
 
     cout << "----------Json members:--------" << endl;
     json->PrintKeys();
     cout << endl;
 
-    cout << "imie: " << json->GetMemberValue<string>("imie") << endl;
+    /*cout << "imie: " << json->GetMemberValue<string>("imie") << endl;
 
     cout << "'numer' type is double: " << json->CheckValueType<double>("numer") << endl;
     cout << "'numer' type is string: " << json->CheckValueType<string>("numer") << endl;
@@ -42,7 +43,7 @@ int main(int argc, const char* argv[])
     for (auto e:json->GetArrayOfType<double>("array"))
     {
         cout << "array element: " << e << endl;
-    }
+    }*/
 
     return 0;
 }
