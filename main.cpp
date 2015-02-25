@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "Json.h"
+#include "Performance.h"
 
 
 using namespace std;
@@ -8,7 +9,15 @@ using namespace std;
 
 int main(int argc, const char* argv[])
 {
+    cout << "mem before: " << GetMemorySize() << endl;
+    auto time1 = Time();
+
     auto json = new Json(argv[1]);
+
+    auto time2 = Time();
+
+    cout << "mem after: " << GetMemorySize() << endl;
+    cout << "loading time, ms: " << TimeDiff(time1, time2).tv_nsec / 1024 << endl;
 
     cout << "----------Json members:--------" << endl;
     json->PrintKeys();
