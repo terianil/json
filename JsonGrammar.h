@@ -1,25 +1,35 @@
-#include <boost/spirit.hpp>
+#include <boost/any.hpp>
+#include <boost/spirit/include/qi.hpp>
+#include <boost/fusion/include/std_pair.hpp>
 
-struct JsonGrammar : public boost::spirit::grammar<JsonGrammar>
-{
-    template <typename Scanner>
-    struct definition
-    {
-        boost::spirit::rule<Scanner> object, element, string, value, number;
+#include <vector>
+#include <map>
+#include <iostream>
+#include <fstream>
 
-        definition(const JsonGrammar& self)
-        {
-            using namespace boost::spirit;
-            object = "{" >> element >> *("," >> element) >> "}";
-            element = string >> ":" >> value;
-            string = "\"" >> *~ch_p("\"") >> "\"";
-            value = string | number;
-            number = real_p;
-        }
+namespace qi = boost::spirit::qi;
+namespace ascii = boost::spirit::ascii;
 
-        const boost::spirit::rule<Scanner>& start()
-        {
-            return object;
-        }
-    };
+using qi::lexeme;
+using qi::double_;
+using qi::bool_;
+using ascii::char_;
+
+template< typename Iterator >
+struct JsonGrammar : qi::grammar< Iterator, boost::any(), ascii::space_type > {
+    JsonGrammar(): JsonGrammar::base_type( root ) {
+        root = object.alias();
+        object = '{' >> pair % ',' >> '}';
+        pair = key >> ':' >> value;
+        value = array | key | double_ | bool_;
+        array = '[' >> value % ',' >> ']';
+        key = lexeme[ '\"' >> *( char_ - '\"' ) >> '\"' ];
+    }
+
+    qi::rule< Iterator, boost::any(), ascii::space_type > root;
+    qi::rule< Iterator, std::map< std::string, boost::any >(), ascii::space_type > object;
+    qi::rule< Iterator, std::pair< std::string, boost::any >(), ascii::space_type > pair;
+    qi::rule< Iterator, boost::any(), ascii::space_type > value;
+    qi::rule< Iterator, std::vector< boost::any >(), ascii::space_type > array;
+    qi::rule< Iterator, std::string(), ascii::space_type > key;
 };
