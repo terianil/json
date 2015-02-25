@@ -21,7 +21,7 @@ struct JsonGrammar : qi::grammar< Iterator, boost::any(), ascii::space_type > {
         root = object.alias();
         object = '{' >> pair % ',' >> '}';
         pair = string >> ':' >> value;
-        value = array | string | double_ | bool_;
+        value = object | array | string | double_ | bool_;
         array = '[' >> value % ',' >> ']';
         string = lexeme[ '\"' >> *( char_ - '\"' ) >> '\"' ];
     }

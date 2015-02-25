@@ -40,20 +40,20 @@ public:
         this->root = boost::any_cast<std::map<std::string, boost::any>>(this->rawData);
     }
 
-    void PrintKeys()
+    void PrintKeys() const
     {
         for( auto it = root.begin(); it != root.end(); ++it ) {
             std::cout << it->first << std::endl;
         }
     }
 
-    bool ContainsKey(string key)
+    bool ContainsKey(string key) const
     {
         return this->root.find(key) != root.end();
     }
 
     template<typename T>
-    T GetMemberValue(string key)
+    const T GetMemberValue(string key) const
     {
         auto found = this->root.find(key);
 
@@ -66,13 +66,14 @@ public:
     }
 
     template<typename T>
-    bool CheckValueType(string key)
+    bool CheckValueType(string key) const
     {
         auto found = this->root.find(key);
 
         if(found != root.end())
         {
-            try {
+            try
+            {
                 auto test = boost::any_cast<T>((*found).second);
 
                 return true;
@@ -86,9 +87,26 @@ public:
         return false;
     }
 
+    bool IsNestedObject(string key) const
+    {
+        return CheckValueType<std::map<std::string, boost::any>>(key);
+    }
+
+    const Json GetNestedObject(string key)
+    {
+        auto newRoot = this->GetMemberValue<std::map<std::string, boost::any>>(key);
+
+        return Json(newRoot);
+    }
+
 private:
     boost::any rawData;
     std::map<std::string, boost::any> root;
+
+    Json(std::map<std::string, boost::any> newRoot)
+    {
+        this->root = newRoot;
+    }
 
     std::string ReadFile(const char* fileName)
     {

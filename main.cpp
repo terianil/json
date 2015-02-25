@@ -20,5 +20,12 @@ int main(int argc, const char* argv[])
     cout << "'numer' type is string: " << json->CheckValueType<string>("numer") << endl;
     cout << "numer: " << json->GetMemberValue<double>("numer") << endl;
 
+    cout << endl;
+    cout << "Test nested objects:" << endl;
+    cout << "'nested' type is nested: " << json->IsNestedObject("nested") << endl;
+    cout << "'nested' member members:" << endl;
+    json->GetNestedObject("nested").PrintKeys();
+
+
     return 0;
 }

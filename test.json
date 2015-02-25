@@ -1,5 +1,9 @@
 {
   "numer" : 42,
   "imie" : "Jarek",
-  "nazwisko" : "Iwanow"
+  "nazwisko" : "Iwanow",
+  "nested" :
+  {
+    "test" : "test"
+  }
 }
