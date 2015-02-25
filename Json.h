@@ -74,6 +74,9 @@ public:
         {
             try
             {
+                auto first = (*found).first;
+                auto second = (*found).second;
+
                 auto test = boost::any_cast<T>((*found).second);
 
                 return true;
@@ -97,6 +100,26 @@ public:
         auto newRoot = this->GetMemberValue<std::map<std::string, boost::any>>(key);
 
         return Json(newRoot);
+    }
+
+    bool IsArray(string key) const
+    {
+        return CheckValueType<vector<boost::any>>(key);
+    }
+
+    template<typename T>
+    const vector<T> GetArrayOfType(string key) const
+    {
+        vector<T> out;
+
+        auto o = GetMemberValue<std::vector<boost::any>>(key);
+
+        for(auto e : o)
+        {
+            out.push_back(boost::any_cast<T>(e));
+        }
+
+        return out;
     }
 
 private:

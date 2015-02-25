@@ -21,11 +21,19 @@ int main(int argc, const char* argv[])
     cout << "numer: " << json->GetMemberValue<double>("numer") << endl;
 
     cout << endl;
-    cout << "Test nested objects:" << endl;
+    cout << "Testing nested objects:" << endl;
     cout << "'nested' type is nested: " << json->IsNestedObject("nested") << endl;
     cout << "'nested' member members:" << endl;
     json->GetNestedObject("nested").PrintKeys();
 
+    cout << endl;
+    cout << "Testing arrays:" << endl;
+    cout << "'array' type is array: " << json->IsArray("array") << endl;
+    cout << "'nested' member members:" << endl;
+    for (auto e:json->GetArrayOfType<double>("array"))
+    {
+        cout << "array element: " << e << endl;
+    }
 
     return 0;
 }

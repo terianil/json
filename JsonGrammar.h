@@ -26,10 +26,10 @@ struct JsonGrammar : qi::grammar< Iterator, boost::any(), ascii::space_type > {
         string = lexeme[ '\"' >> *( char_ - '\"' ) >> '\"' ];
     }
 
-    qi::rule< Iterator, boost::any(), ascii::space_type > root;
-    qi::rule< Iterator, std::map< std::string, boost::any >(), ascii::space_type > object;
-    qi::rule< Iterator, std::pair< std::string, boost::any >(), ascii::space_type > pair;
-    qi::rule< Iterator, boost::any(), ascii::space_type > value;
-    qi::rule< Iterator, std::vector< boost::any >(), ascii::space_type > array;
-    qi::rule< Iterator, std::string(), ascii::space_type > string;
+    qi::rule<Iterator, boost::any(), ascii::space_type> root;
+    qi::rule<Iterator, std::map<std::string, boost::any>(), ascii::space_type> object;
+    qi::rule<Iterator, std::pair<std::string, boost::any>(), ascii::space_type> pair;
+    qi::rule<Iterator, boost::any(), ascii::space_type> value;
+    qi::rule<Iterator, std::vector< boost::any>(), ascii::space_type> array;
+    qi::rule<Iterator, std::string(), ascii::space_type> string;
 };
